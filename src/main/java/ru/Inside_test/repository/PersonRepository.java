@@ -14,6 +14,6 @@ public interface PersonRepository
 
     Person save(Person person);
 
-    public List<Person> findAll();
+    List<Person> findAll();
 
 }

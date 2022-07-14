@@ -10,6 +10,11 @@ import java.util.HashMap;
 
 public interface Store {
 
+    /**
+     *
+     * default метод для обновления данных в сервисах
+     * реализует метод запроса PATCH
+     */
     default Object patch(CrudRepository repository, int id, Object object) throws InvocationTargetException, IllegalAccessException {
         var current = repository.findById(id);
         if (!current.isPresent()) {

@@ -103,6 +103,10 @@ public class MessageController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * обновить данные
+     */
+
     @PatchMapping("/patch/{id}")
     public Message patch(@PathVariable int id, @Valid @RequestBody Message message) throws InvocationTargetException, IllegalAccessException {
         return messageService.patch(id, message);

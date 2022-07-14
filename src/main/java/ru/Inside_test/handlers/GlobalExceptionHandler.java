@@ -19,6 +19,9 @@ public class GlobalExceptionHandler {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * ловит NullPointerException
+     */
     @ExceptionHandler(value = {NullPointerException.class})
     public void handleException(NullPointerException e, HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setStatus(HttpStatus.BAD_REQUEST.value());

@@ -15,8 +15,7 @@ public interface MessageRepository
     List<Message> findByPersonId(int personId);
 
     @Query(value =
-            "SELECT * FROM message WHERE person_id = ?1 LIMIT ?2",
-    nativeQuery = true)
+            "SELECT * FROM message WHERE person_id = ?1 ORDER BY body DESC LIMIT ?2", nativeQuery = true)
     List<Message> findMessageHistoryWithLimit(int person_id, int limit);
 }
 

@@ -1,0 +1,34 @@
+Команды для cURL
+
+1) Зарегистрировать пользователя
+
+curl -H "Content-Type:application/json" -X POST -d {"""name""":"""admin""","""password""":"""password"""} "http://localhost:9092/person/sign-up"
+
+2)Войти в систему
+
+curl -H "Content-Type:application/json" -X POST -d {"""name""":"""admin""","""password""":"""password"""} "http://localhost:9092/login"
+
+3)необходимо скопировать заголовок Authorization (Bearer_ХХХ)
+
+
+4) Показать всех пользователей
+
+curl -H "Authorization:Bearer_ХХХ" "http://localhost:9092/person/"
+
+5)опубликовать сообщение
+
+curl -H "Authorization:Bearer_ХХХ" -H "Content-Type:application/json" -X POST -d{"""body""":"""msg1"""} "http://localhost:9092/message/"
+
+6)Показать все сообщения в системе
+
+curl -H "Authorization: Bearer_ХХХ" "http://localhost:9092/message/"
+
+
+7)Показать все сообщения пользователя(Историю сообщений)
+
+curl -H "Authorization:Bearer_ХХХ" -H "Content-Type:application/json" -X POST -d{"""body""":"""history"""} "http://localhost:9092/message/"
+
+
+8) Показать определенное кол-во сообщений пользователя(Например, 4шт)
+
+curl -H "Authorization:Bearer_ХХХ" -H "Content-Type:application/json" -X POST -d{"""body""":"""history 4"""} "http://localhost:9092/message/"

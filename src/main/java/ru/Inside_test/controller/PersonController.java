@@ -37,20 +37,17 @@ public class PersonController {
      */
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Person> savePerson(@Valid @RequestBody Person person) {
-        Optional<Person> result = Optional.ofNullable(person);
-        if (result.isPresent()) {
+    public ResponseEntity savePerson(@Valid @RequestBody Person person) {
+        Optional<Person> result = Optional.ofNullable(personService.findByName(person.getName()));
+        if (!result.isPresent()) {
             person.setPassword(encoder.encode(person.getPassword()));
             personService.save(person);
             return new ResponseEntity<>(
-                    result.get(),
+                    person,
                     HttpStatus.CREATED
             );
         } else {
-            return new ResponseEntity<>(
-                    new Person(),
-                    HttpStatus.NOT_FOUND
-            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("registration : false. Person already registered");
         }
     }
 
@@ -72,25 +69,20 @@ public class PersonController {
      * удалить пользователя
      */
 
-    @DeleteMapping("/")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         personService.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
+    /**
+     * обновить данные
+     */
 
     @PatchMapping("/person/patch/{id}")
     public Person patch(@PathVariable int id, @Valid  @RequestBody Person person) throws InvocationTargetException, IllegalAccessException {
         return personService.patch(id, person);
     }
 
-    @ExceptionHandler(value = { IllegalArgumentException.class })
-    public void exceptionHandler(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
-        response.setContentType("application/json");
-        response.getWriter().write(objectMapper.writeValueAsString(new HashMap<>() { {
-            put("message", e.getMessage());
-            put("type", e.getClass());
-        } }));
-    }
 
 }

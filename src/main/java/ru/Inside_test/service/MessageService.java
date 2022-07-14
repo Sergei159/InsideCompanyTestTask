@@ -1,15 +1,15 @@
 package ru.Inside_test.service;
 
-import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.Inside_test.domain.Message;
+import ru.Inside_test.dto.MessageDto;
 import ru.Inside_test.repository.MessageRepository;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService implements Store {
@@ -28,22 +28,33 @@ public class MessageService implements Store {
         return repository.findById(id);
     }
 
-
     public List<Message> findMessageByPersonId(int personId) {
         return repository.findByPersonId(personId);
     }
 
+    /**
+     *
+     * Метод проверяет, является ли тело сообщения null
+     *  1. если сообщение "history", то пользователю возвращается вся его история сообщений
+     *  2. если сообщение "history XXX", где XXX - Число,
+     *  то пользователю возвращается XXX его сообщений,
+     *  если ХХХ больше кол-ва сообщений, то возвращается вся история сообщений
+     *  3. Иначе сообщение просто отправляется и сохраняется.
+     */
+
     public ResponseEntity saveMessage(Message message) {
-        List<Message> resultList;
+        if (message.getBody() == null) {
+            throw new NullPointerException("Body message cannot be null");
+        }
+        List<Message> messageList;
         if ("history".equals(message.getBody())) {
-            resultList = repository.findByPersonId(message.getPerson().getId());
-            return ResponseEntity.ok().body(resultList);
-        } else if (containsHistoryRequest(message)) {
+            messageList = repository.findByPersonId(message.getPerson().getId());
+            return ResponseEntity.ok().body(convertListToMessageDTO(messageList));
+        } else if (containsHistoryRequestWithLimit(message)) {
             String[] splitValues = message.getBody().split(" ");
-            resultList = repository.findMessageHistoryWithLimit(
+            messageList = repository.findMessageHistoryWithLimit(
                     message.getPerson().getId(), Integer.parseInt(splitValues[1]));
-            System.out.println(resultList.toString());
-            return ResponseEntity.ok().body(resultList);
+            return ResponseEntity.ok().body(convertListToMessageDTO(messageList));
         } else {
             repository.save(message);
             return ResponseEntity.ok().build();
@@ -58,8 +69,13 @@ public class MessageService implements Store {
         return (Message) patch(repository, id, message);
     }
 
+    /**
+     * Метод проверяет, что сообщение имеет вид
+     * "history XXX", где XXX - число.
+     * Пробел в теле сообщения обязателен
+     */
 
-    private boolean containsHistoryRequest(Message message) {
+    boolean containsHistoryRequestWithLimit(Message message) {
         boolean result = false;
         String body = message.getBody();
         if (!body.isBlank() && body.startsWith("history")) {
@@ -71,6 +87,19 @@ public class MessageService implements Store {
             }
         }
         return result;
+    }
+
+    /**
+     *
+     * Создает Лист MessageDTO из листа Message
+     */
+
+    private List<MessageDto> convertListToMessageDTO(List<Message> list) {
+        return list.stream()
+                .map(msg -> MessageDto.of(
+                        msg.getPerson().getName(),
+                        msg.getBody()))
+                .collect(Collectors.toList());
     }
 
 }

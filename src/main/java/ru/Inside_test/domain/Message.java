@@ -15,7 +15,7 @@ public class Message {
     @NotBlank(message = "Message body must contain symbols")
     private String body;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "person_id")
     private Person person;
 

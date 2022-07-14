@@ -12,6 +12,11 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ValidationControllerAdvice {
 
+    /**
+     * Метод ловит MethodArgumentNotValidException для полей с
+     * аннотацией @Valid
+     */
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handle(MethodArgumentNotValidException e) {
         return ResponseEntity.badRequest().body(
