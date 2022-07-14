@@ -1,34 +1,34 @@
-Команды для cURL
+п»їРљРѕРјР°РЅРґС‹ РґР»СЏ cURL
 
-1) Зарегистрировать пользователя
+1) Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 
 curl -H "Content-Type:application/json" -X POST -d {"""name""":"""admin""","""password""":"""password"""} "http://localhost:9092/person/sign-up"
 
-2)Войти в систему
+2)Р’РѕР№С‚Рё РІ СЃРёСЃС‚РµРјСѓ
 
 curl -H "Content-Type:application/json" -X POST -d {"""name""":"""admin""","""password""":"""password"""} "http://localhost:9092/login"
 
-3)необходимо скопировать заголовок Authorization (Bearer_ХХХ)
+3)РЅРµРѕР±С…РѕРґРёРјРѕ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ Р·Р°РіРѕР»РѕРІРѕРє Authorization (Bearer_РҐРҐРҐ)
 
 
-4) Показать всех пользователей
+4) РџРѕРєР°Р·Р°С‚СЊ РІСЃРµС… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 
-curl -H "Authorization:Bearer_ХХХ" "http://localhost:9092/person/"
+curl -H "Authorization:Bearer_РҐРҐРҐ" "http://localhost:9092/person/"
 
-5)опубликовать сообщение
+5)РѕРїСѓР±Р»РёРєРѕРІР°С‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ
 
-curl -H "Authorization:Bearer_ХХХ" -H "Content-Type:application/json" -X POST -d{"""body""":"""msg1"""} "http://localhost:9092/message/"
+curl -H "Authorization:Bearer_РҐРҐРҐ" -H "Content-Type:application/json" -X POST -d{"""body""":"""msg1"""} "http://localhost:9092/message/"
 
-6)Показать все сообщения в системе
+6)РџРѕРєР°Р·Р°С‚СЊ РІСЃРµ СЃРѕРѕР±С‰РµРЅРёСЏ РІ СЃРёСЃС‚РµРјРµ
 
-curl -H "Authorization: Bearer_ХХХ" "http://localhost:9092/message/"
-
-
-7)Показать все сообщения пользователя(Историю сообщений)
-
-curl -H "Authorization:Bearer_ХХХ" -H "Content-Type:application/json" -X POST -d{"""body""":"""history"""} "http://localhost:9092/message/"
+curl -H "Authorization: Bearer_РҐРҐРҐ" "http://localhost:9092/message/"
 
 
-8) Показать определенное кол-во сообщений пользователя(Например, 4шт)
+7)РџРѕРєР°Р·Р°С‚СЊ РІСЃРµ СЃРѕРѕР±С‰РµРЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ(РСЃС‚РѕСЂРёСЋ СЃРѕРѕР±С‰РµРЅРёР№)
 
-curl -H "Authorization:Bearer_ХХХ" -H "Content-Type:application/json" -X POST -d{"""body""":"""history 4"""} "http://localhost:9092/message/"
+curl -H "Authorization:Bearer_РҐРҐРҐ" -H "Content-Type:application/json" -X POST -d{"""body""":"""history"""} "http://localhost:9092/message/"
+
+
+8) РџРѕРєР°Р·Р°С‚СЊ РѕРїСЂРµРґРµР»РµРЅРЅРѕРµ РєРѕР»-РІРѕ СЃРѕРѕР±С‰РµРЅРёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ(РќР°РїСЂРёРјРµСЂ, 4С€С‚)
+
+curl -H "Authorization:Bearer_РҐРҐРҐ" -H "Content-Type:application/json" -X POST -d{"""body""":"""history 4"""} "http://localhost:9092/message/"
